@@ -1,16 +1,14 @@
 # Dependencies
 node_modules/
-
-# Package manager
 .pnpm-store/
 
 # Turborepo
 .turbo/
 
-# Build outputs
+# Builds
+.next/
 dist/
 build/
-.next/
 out/
 coverage/
 
@@ -24,8 +22,10 @@ coverage/
 *.log
 npm-debug.log*
 pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+
+# Tests
+playwright-report/
+test-results/
 
 # OS
 .DS_Store
@@ -37,11 +37,7 @@ Thumbs.db
 !.vscode/extensions.json
 !.vscode/settings.json
 
-# Temporary
+# Temp
 tmp/
 temp/
 *.tmp
-
-# Test / browser artifacts
-playwright-report/
-test-results/
