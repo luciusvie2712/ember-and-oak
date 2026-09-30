@@ -1,0 +1,23 @@
+{
+    "name": "ember-and-oak",
+    "version": "0.0.0",
+    "private": true, 
+    "packageManager": "pnpm@12.8.1",
+    "engines": {
+        "node": ">=24.21.0 <25",
+        "pnpm": ">=12.8.1 <13"
+    },
+    "scripts": {
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "lint": "turbo run lint",
+        "typecheck": "turbo run typecheck",
+        "test": "turbo run test",
+        "test:intergration": "turbo run test:integration",
+        "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+        "clean": "turbo run clean"
+    },
+    "devDependencies": {
+        "turbo": "2.10.6"
+    }
+}
