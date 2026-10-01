@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Install, verify, build, and integrate
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: ember_and_oak
+          POSTGRES_USER: ember
+          POSTGRES_PASSWORD: local_only_password
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U ember -d ember_and_oak"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      NODE_ENV: test
+      DEPLOYMENT_ENV: development
+      DATABASE_URL: postgresql://ember:local_only_password@localhost:5432/ember_and_oak
+      DATABASE_CHECK_ON_STARTUP: "false"
+      CORS_ORIGINS: http://localhost:3000,http://localhost:3001
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Format check
+        run: pnpm format:check
+      - name: Lint
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Unit tests
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+      - name: Integration tests
+        run: pnpm test:integration
+      - name: Database connectivity
+        run: pnpm db:check
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Foundation E2E
+        run: pnpm test:e2e
+
+  staging:
+    name: Deploy and smoke-test staging
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: quality
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      WEB_DEPLOY_HOOK: ${{ secrets.WEB_DEPLOY_HOOK }}
+      ADMIN_DEPLOY_HOOK: ${{ secrets.ADMIN_DEPLOY_HOOK }}
+      API_DEPLOY_HOOK: ${{ secrets.API_DEPLOY_HOOK }}
+      WEB_STAGING_URL: ${{ vars.WEB_STAGING_URL }}
+      ADMIN_STAGING_URL: ${{ vars.ADMIN_STAGING_URL }}
+      API_STAGING_URL: ${{ vars.API_STAGING_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger configured staging deployments
+        shell: bash
+        run: |
+          test -n "$WEB_DEPLOY_HOOK" && curl --fail --silent --show-error -X POST "$WEB_DEPLOY_HOOK"
+          test -n "$ADMIN_DEPLOY_HOOK" && curl --fail --silent --show-error -X POST "$ADMIN_DEPLOY_HOOK"
+          test -n "$API_DEPLOY_HOOK" && curl --fail --silent --show-error -X POST "$API_DEPLOY_HOOK"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.15.0
+      - name: Smoke-test staging URLs
+        run: node scripts/smoke-staging.mjs

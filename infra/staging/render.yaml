@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: ember-and-oak-api-staging
+    runtime: docker
+    dockerfilePath: ./infra/docker/api.Dockerfile
+    dockerContext: .
+    plan: starter
+    healthCheckPath: /api
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DEPLOYMENT_ENV
+        value: staging
+      - key: PORT
+        value: 4000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ember-and-oak-staging
+          property: connectionString
+      - key: DATABASE_CHECK_ON_STARTUP
+        value: "true"
+      - key: CORS_ORIGINS
+        sync: false
+
+databases:
+  - name: ember-and-oak-staging
+    plan: basic-256mb
+    databaseName: ember_and_oak_staging
+    user: ember_staging

@@ -1,0 +1,37 @@
+{
+  "name": "@ember-and-oak/admin",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start --port 3001",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:integration": "vitest run --passWithNoTests --exclude '**/*.spec.tsx'",
+    "clean": "node -e \"require('node:fs').rmSync('.next',{recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "@ember-and-oak/types": "workspace:*",
+    "@ember-and-oak/ui": "workspace:*",
+    "@ember-and-oak/validation": "workspace:*",
+    "next": "16.3.7",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@ember-and-oak/config": "workspace:*",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.7",
+    "tailwindcss": "^4",
+    "typescript": "6.0.3",
+    "vitest": "4.1.2"
+  },
+  "packageManager": "pnpm@10.15.0"
+}

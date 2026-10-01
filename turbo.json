@@ -1,34 +1,44 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "NODE_ENV",
+    "DEPLOYMENT_ENV",
+    "DATABASE_URL",
+    "DATABASE_CHECK_ON_STARTUP",
+    "CORS_ORIGINS",
+    "LOG_LEVEL",
+    "ERROR_TRACKING_DSN",
+    "EMAIL_PROVIDER_API_KEY",
+    "NEXT_PUBLIC_API_URL",
+    "NEXT_PUBLIC_DEPLOYMENT_ENV"
+  ],
   "tasks": {
     "dev": {
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        "dist/**",
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "lint": {
       "dependsOn": ["^lint"],
       "outputs": []
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"],
+      "dependsOn": ["^build", "^typecheck"],
       "outputs": []
     },
     "test": {
-      "dependsOn": ["^test"],
-      "outputs": [
-        "coverage/**"
-      ]
+      "dependsOn": ["^build", "^test"],
+      "outputs": ["coverage/**"]
     },
     "test:integration": {
       "dependsOn": ["^test:integration"],
+      "outputs": []
+    },
+    "format:check": {
       "outputs": []
     },
     "clean": {

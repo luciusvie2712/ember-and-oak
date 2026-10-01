@@ -1,0 +1,16 @@
+node_modules
+.next
+dist
+coverage
+.turbo
+playwright-report
+test-results
+pnpm-lock.yaml
+public/*.svg
+docs/phase-0
+docs/phase-1
+docs/phase-2
+docs/phase-3
+docs/phase-4
+docs/project
+scripts/phase-5.3-normalize.mjs

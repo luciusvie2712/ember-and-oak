@@ -14,10 +14,23 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "test:integration": "turbo run test:integration",
-    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build",
-    "clean": "turbo run clean"
+    "test:e2e": "playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:check": "pnpm --filter @ember-and-oak/api db:check",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:integration",
+    "clean": "turbo run clean",
+    "dev:web": "pnpm --filter @ember-and-oak/web dev",
+    "dev:admin": "pnpm --filter @ember-and-oak/admin dev",
+    "dev:api": "pnpm --filter @ember-and-oak/api dev",
+    "build:web": "pnpm --filter @ember-and-oak/web build",
+    "build:admin": "pnpm --filter @ember-and-oak/admin build",
+    "build:api": "pnpm --filter @ember-and-oak/api build"
   },
   "devDependencies": {
+    "@playwright/test": "1.55.1",
+    "cross-env": "10.0.0",
+    "prettier": "3.6.2",
     "turbo": "2.10.6"
   }
 }

@@ -1,0 +1,16 @@
+import { BadRequestException, type PipeTransform } from '@nestjs/common';
+import type { ZodType } from '@ember-and-oak/validation';
+
+export class ZodValidationPipe<T> implements PipeTransform<unknown, T> {
+  constructor(private readonly schema: ZodType<T>) {}
+
+  transform(value: unknown): T {
+    const result = this.schema.safeParse(value);
+
+    if (!result.success) {
+      throw new BadRequestException('Request validation failed');
+    }
+
+    return result.data;
+  }
+}

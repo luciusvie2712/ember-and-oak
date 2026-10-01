@@ -11,12 +11,14 @@ dist/
 build/
 out/
 coverage/
+*.tsbuildinfo
 
 # Environment / secrets
 .env
 .env.*
 !.env.example
 !.env.*.example
+!.env.staging.example
 
 # Logs
 *.log
@@ -26,6 +28,7 @@ pnpm-debug.log*
 # Tests
 playwright-report/
 test-results/
+.vercel/
 
 # OS
 .DS_Store
