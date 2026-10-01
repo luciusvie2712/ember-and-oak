@@ -4,13 +4,9 @@ const targets = [
   ["api", process.env.API_STAGING_URL, "/api"],
 ];
 
-const timeoutMs = Number(
-  process.env.STAGING_SMOKE_TIMEOUT_MS ?? 300_000,
-);
+const timeoutMs = Number(process.env.STAGING_SMOKE_TIMEOUT_MS ?? 300_000);
 
-const intervalMs = Number(
-  process.env.STAGING_SMOKE_INTERVAL_MS ?? 10_000,
-);
+const intervalMs = Number(process.env.STAGING_SMOKE_INTERVAL_MS ?? 10_000);
 
 const sleep = (milliseconds) =>
   new Promise((resolve) => {
@@ -19,9 +15,7 @@ const sleep = (milliseconds) =>
 
 async function waitForTarget(name, baseUrl, path) {
   if (!baseUrl) {
-    throw new Error(
-      `Missing ${name.toUpperCase()}_STAGING_URL`,
-    );
+    throw new Error(`Missing ${name.toUpperCase()}_STAGING_URL`);
   }
 
   const url = new URL(path, baseUrl);
@@ -42,27 +36,18 @@ async function waitForTarget(name, baseUrl, path) {
       });
 
       if (response.ok) {
-        process.stdout.write(
-          `${name}: ready (${response.status}) ${url}\n`,
-        );
+        process.stdout.write(`${name}: ready (${response.status}) ${url}\n`);
 
         return;
       }
 
       lastResult = `HTTP ${response.status}`;
 
-      process.stdout.write(
-        `${name}: attempt ${attempt} returned ${lastResult}; retrying...\n`,
-      );
+      process.stdout.write(`${name}: attempt ${attempt} returned ${lastResult}; retrying...\n`);
     } catch (error) {
-      lastResult =
-        error instanceof Error
-          ? error.message
-          : String(error);
+      lastResult = error instanceof Error ? error.message : String(error);
 
-      process.stdout.write(
-        `${name}: attempt ${attempt} failed (${lastResult}); retrying...\n`,
-      );
+      process.stdout.write(`${name}: attempt ${attempt} failed (${lastResult}); retrying...\n`);
     }
 
     await sleep(intervalMs);
@@ -73,12 +58,6 @@ async function waitForTarget(name, baseUrl, path) {
   );
 }
 
-await Promise.all(
-  targets.map(([name, baseUrl, path]) =>
-    waitForTarget(name, baseUrl, path),
-  ),
-);
+await Promise.all(targets.map(([name, baseUrl, path]) => waitForTarget(name, baseUrl, path)));
 
-process.stdout.write(
-  "All staging smoke checks passed.\n",
-);
+process.stdout.write("All staging smoke checks passed.\n");
