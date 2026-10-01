@@ -24,6 +24,6 @@ services:
 
 databases:
   - name: ember-and-oak-staging
-    plan: basic-256mb
+    plan: free
     databaseName: ember_and_oak_staging
     user: ember_staging
