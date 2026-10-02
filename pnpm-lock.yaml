@@ -263,6 +263,9 @@ importers:
 
   packages/validation:
     dependencies:
+      '@ember-and-oak/types':
+        specifier: workspace:*
+        version: link:../types
       zod:
         specifier: 4.1.11
         version: 4.1.11
