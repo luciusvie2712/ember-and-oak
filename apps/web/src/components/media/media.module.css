@@ -1,0 +1,20 @@
+.figure {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-bg-elevated);
+}
+
+.figure img {
+  display: block;
+}
+
+.caption {
+  position: absolute;
+  inset: auto var(--space-4) var(--space-4);
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  background: rgb(23 21 18 / 82%);
+  color: var(--color-text-secondary);
+  font-size: var(--type-label);
+}

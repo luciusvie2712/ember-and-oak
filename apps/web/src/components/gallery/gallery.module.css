@@ -1,0 +1,114 @@
+.page {
+  min-height: 70svh;
+  padding: 10rem 0 clamp(6rem, 12vw, 10rem);
+}
+
+.header,
+.navigation,
+.grid,
+.empty {
+  width: min(100% - 2.5rem, var(--container-wide));
+  margin-inline: auto;
+}
+
+.header {
+  padding-bottom: clamp(3rem, 7vw, 6rem);
+}
+
+.header h1 {
+  margin: var(--space-6) 0;
+  font-size: var(--type-display-lg);
+  font-weight: 500;
+  line-height: var(--leading-display);
+}
+
+.header > p:last-child {
+  max-width: var(--container-reading);
+  color: var(--color-text-secondary);
+  font-size: var(--type-body-lg);
+}
+
+.navigation {
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+  padding-block: var(--space-4);
+  display: flex;
+  gap: var(--space-2);
+  border-block: var(--border-hairline) solid var(--color-border-dark);
+  overflow-x: auto;
+}
+
+.navigation a {
+  min-height: 2.75rem;
+  padding: 0 var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-size: var(--type-body-sm);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navigation a[aria-current="page"] {
+  background: var(--color-accent);
+  color: var(--color-text-dark);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: start;
+}
+
+.item {
+  grid-column: span 4;
+  margin: 0;
+}
+
+.item:nth-child(5n + 1),
+.item:nth-child(5n + 4) {
+  grid-column: span 7;
+}
+
+.item:nth-child(5n + 2),
+.item:nth-child(5n + 5) {
+  grid-column: span 5;
+}
+
+.itemMedia {
+  width: 100%;
+}
+
+.item p {
+  margin-top: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--type-body-sm);
+}
+
+.empty {
+  padding: var(--space-16) 0;
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 48rem) {
+  .header,
+  .navigation,
+  .grid,
+  .empty {
+    width: min(100% - 4rem, var(--container-wide));
+  }
+}
+
+@media (max-width: 63.999rem) {
+  .item,
+  .item:nth-child(n) {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 39.999rem) {
+  .item,
+  .item:nth-child(n) {
+    grid-column: 1 / -1;
+  }
+}

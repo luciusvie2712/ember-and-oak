@@ -1,0 +1,120 @@
+.page {
+  padding-top: 10rem;
+}
+
+.intro,
+.section,
+.cta,
+.empty {
+  width: min(100% - 2.5rem, var(--container-wide));
+  margin-inline: auto;
+}
+
+.intro {
+  min-height: 70svh;
+  padding-bottom: clamp(5rem, 10vw, 10rem);
+  display: grid;
+  align-content: center;
+}
+
+.intro h1 {
+  max-width: 18ch;
+  margin: var(--space-6) 0;
+  font-size: var(--type-display-lg);
+  font-weight: 500;
+  line-height: var(--leading-display);
+}
+
+.intro > p:last-child {
+  max-width: var(--container-reading);
+  color: var(--color-text-secondary);
+  font-size: var(--type-body-lg);
+}
+
+.section {
+  padding: clamp(5rem, 10vw, 9rem) 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.85fr);
+  gap: clamp(3rem, 9vw, 9rem);
+  align-items: center;
+  border-top: var(--border-hairline) solid var(--color-border-dark);
+}
+
+.section[data-reverse="true"] {
+  grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.2fr);
+}
+
+.section[data-reverse="true"] .media {
+  order: 2;
+}
+
+.section:not(:has(.media)) .copy {
+  grid-column: 2;
+}
+
+.media {
+  width: 100%;
+  min-height: 26rem;
+}
+
+.copy h2 {
+  margin: var(--space-5) 0;
+  font-size: var(--type-heading-1);
+  font-weight: 500;
+  line-height: var(--leading-heading);
+}
+
+.copy > p {
+  color: var(--color-text-secondary);
+  font-size: var(--type-body-lg);
+}
+
+.quote {
+  margin: var(--space-8) 0 0;
+  color: var(--color-accent);
+  font-size: var(--type-heading-3);
+  line-height: 1.25;
+}
+
+.cta {
+  padding: clamp(7rem, 14vw, 12rem) 0;
+  text-align: center;
+}
+
+.cta h2 {
+  max-width: 18ch;
+  margin: var(--space-5) auto var(--space-8);
+  font-size: var(--type-heading-1);
+  font-weight: 500;
+}
+
+.empty {
+  min-height: 65svh;
+  padding: 12rem 0;
+}
+
+@media (min-width: 48rem) {
+  .intro,
+  .section,
+  .cta,
+  .empty {
+    width: min(100% - 4rem, var(--container-wide));
+  }
+}
+
+@media (max-width: 47.999rem) {
+  .section,
+  .section[data-reverse="true"] {
+    grid-template-columns: 1fr;
+  }
+
+  .section[data-reverse="true"] .media,
+  .section:not(:has(.media)) .copy {
+    order: initial;
+    grid-column: auto;
+  }
+
+  .media {
+    min-height: 0;
+  }
+}
