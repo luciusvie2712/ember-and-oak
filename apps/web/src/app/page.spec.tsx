@@ -1,10 +1,15 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import Page from "./page";
+vi.mock("next/server", () => ({ connection: vi.fn().mockResolvedValue(undefined) }));
 
-describe("public web scaffold", () => {
-  it("renders the foundation marker", () => {
-    expect(renderToStaticMarkup(<Page />)).toContain("engineering foundation");
+import HomePage from "./page";
+
+describe("home shell", () => {
+  it("fails closed without inventing Home content when the content API is unavailable", async () => {
+    const markup = renderToStaticMarkup(await HomePage());
+
+    expect(markup).toContain("Our dining room is preparing for service.");
+    expect(markup).not.toContain("development-menu-data");
   });
 });

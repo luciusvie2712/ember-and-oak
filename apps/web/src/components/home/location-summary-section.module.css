@@ -1,0 +1,32 @@
+.section {
+  width: min(100% - 2.5rem, var(--container-wide));
+  margin-inline: auto;
+  padding: clamp(6rem, 10vw, 9rem) 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--space-12);
+  align-items: start;
+}
+.section h2 {
+  margin: var(--space-6) 0 0;
+  font-size: var(--type-heading-2);
+  font-weight: 500;
+}
+.section address {
+  display: grid;
+  gap: var(--space-3);
+  font-style: normal;
+}
+.section p {
+  margin-bottom: var(--space-2);
+}
+@media (min-width: 48rem) {
+  .section {
+    width: min(100% - 4rem, var(--container-wide));
+  }
+}
+@media (max-width: 47.999rem) {
+  .section {
+    grid-template-columns: 1fr;
+  }
+}

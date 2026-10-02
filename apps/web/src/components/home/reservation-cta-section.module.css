@@ -1,0 +1,17 @@
+.section {
+  padding: clamp(6rem, 11vw, 9rem) 1.25rem;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-dark);
+  text-align: center;
+}
+.section h2 {
+  margin: var(--space-6) 0;
+  font-size: var(--type-display-lg);
+  font-weight: 500;
+  line-height: var(--leading-display);
+}
+.section > p:not(:first-child) {
+  max-width: 37rem;
+  margin: 0 auto var(--space-10);
+  color: rgb(23 21 18 / 72%);
+}

@@ -1,0 +1,21 @@
+.section {
+  padding: clamp(6rem, 12vw, 10rem) 0;
+}
+.heading {
+  width: min(100% - 2.5rem, var(--container-wide));
+  margin: 0 auto clamp(4rem, 9vw, 8rem);
+}
+.heading h2 {
+  margin: var(--space-6) 0 0;
+  font-size: var(--type-heading-1);
+  font-weight: 500;
+}
+.chapters {
+  display: grid;
+  gap: clamp(6rem, 12vw, 10rem);
+}
+@media (min-width: 48rem) {
+  .heading {
+    width: min(100% - 4rem, var(--container-wide));
+  }
+}
