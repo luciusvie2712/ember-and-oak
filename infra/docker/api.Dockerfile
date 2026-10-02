@@ -18,4 +18,4 @@ ENV NODE_ENV=production
 WORKDIR /workspace
 COPY --from=build /workspace /workspace
 EXPOSE 4000
-CMD ["node", "apps/api/dist/main.js"]
+CMD ["sh", "-c", "node apps/api/dist/database/migrate.js && node apps/api/dist/content/seed-content.js && node apps/api/dist/main.js"]
