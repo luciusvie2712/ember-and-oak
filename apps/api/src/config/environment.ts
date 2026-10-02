@@ -21,6 +21,10 @@ export const environmentSchema = z.object({
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
   ERROR_TRACKING_DSN: z.string().url().optional().or(z.literal('')),
   EMAIL_PROVIDER_API_KEY: z.string().optional(),
+  ADMIN_CONTENT_API_KEY: z.string().min(32).optional(),
+  WEB_REVALIDATION_URL: z.string().url().optional(),
+  WEB_REVALIDATION_SECRET: z.string().min(32).optional(),
+  ASSET_CDN_URL: z.string().url().optional(),
 });
 
 export type ApiEnvironment = z.infer<typeof environmentSchema>;
