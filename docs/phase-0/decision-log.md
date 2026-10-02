@@ -30,6 +30,7 @@ Decision IDs dùng xuyên suốt project. Không sửa lịch sử quyết đị
 | DEC-0022 | Production contact/address | Verify current source values | OPEN |
 | DEC-0023 | Primary language | English | PROPOSED |
 | DEC-0024 | Multi-language | Deferred post-MVP | PROPOSED |
+| DEC-0025 | Phase 7 content implementation | First-party headless content service: PostgreSQL + Nest API + minimal Admin editor; S3-compatible media + CDN | CONFIRMED | Phase 7 architecture preflight; see `docs/phase-7/content-architecture-decision.md` |
 
 ## Decision template
 
