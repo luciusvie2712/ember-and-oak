@@ -1,4 +1,5 @@
 import { Container, Stack } from "@ember-and-oak/ui";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -8,8 +9,10 @@ export default function Page() {
           <p className="eyebrow">Admin · engineering foundation</p>
           <h1>Ember &amp; Oak Admin</h1>
           <p>
-            Application shell only. Authentication and reservation management are not implemented.
+            Phase 7 content publishing is available as a minimal protected editor. Reservation
+            management remains scheduled for the full backoffice phase.
           </p>
+          <Link href="/content/menu/dinner">Open content editor</Link>
         </Stack>
       </Container>
     </main>
