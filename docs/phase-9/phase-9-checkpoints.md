@@ -10,8 +10,8 @@ Status: **IN PROGRESS**
 - [x] 9.3 Availability states
 - [x] 9.4 Slot selection
 - [x] 9.5 Guest details
-- [ ] 9.6 Submission / idempotency / conflict recovery
-- [ ] 9.7 Confirmation
+- [x] 9.6 Submission / idempotency / conflict recovery
+- [x] 9.7 Confirmation
 - [ ] 9.8 Responsive and accessibility verification
 - [ ] 9.9 Automated end-to-end tests
 - [ ] 9.10 Staging verification

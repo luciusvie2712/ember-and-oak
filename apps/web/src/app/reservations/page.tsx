@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 
-import { PublicPageIntro } from "@/components/site/public-page-intro";
+import { ReservationFlow } from "./_components/reservation-flow";
+
+import "./reservation.css";
 
 export const metadata: Metadata = { title: "Reservations" };
 
 export default function ReservationsPage() {
   return (
-    <PublicPageIntro label="Reservations" title="Reserve a Table">
-      <p>
-        The reservation destination is ready. Availability search and booking remain part of the
-        Phase 9 reservation flow.
-      </p>
-    </PublicPageIntro>
+    <section className="reservation-page">
+      <header className="reservation-page__intro">
+        <p className="section-label">Reservations</p>
+        <h1>Reserve a Table</h1>
+        <p>Select your preferred date and party size to view available times.</p>
+      </header>
+      <ReservationFlow />
+    </section>
   );
 }
