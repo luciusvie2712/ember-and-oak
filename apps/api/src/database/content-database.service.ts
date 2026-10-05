@@ -3,6 +3,8 @@ import { Pool, type PoolClient, type QueryResultRow } from 'pg';
 
 import { loadEnvironment } from '../config/environment.js';
 
+export type DatabaseClient = Pick<PoolClient, 'query'>;
+
 @Injectable()
 export class ContentDatabaseService implements OnModuleDestroy {
   private pool?: Pool;

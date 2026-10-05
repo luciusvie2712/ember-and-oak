@@ -22,3 +22,4 @@ export * from "./content/media.js";
 export * from "./content/menu.js";
 export * from "./content/shared.js";
 export * from "./content/story.js";
+export * from "./reservation/index.js";

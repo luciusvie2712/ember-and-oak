@@ -9,14 +9,13 @@ import {
 } from './content/content.controller.js';
 import { ContentRevalidationService } from './content/content-revalidation.service.js';
 import { ContentService } from './content/content.service.js';
-import { ContentDatabaseService } from './database/content-database.service.js';
+import { ReservationModule } from './reservation/reservation.module.js';
 
 @Module({
-  imports: [],
+  imports: [ReservationModule],
   controllers: [AppController, ContentController, AdminContentController],
   providers: [
     AppService,
-    ContentDatabaseService,
     ContentRevalidationService,
     ContentService,
     AdminContentGuard,

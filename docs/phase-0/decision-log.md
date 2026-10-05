@@ -2,7 +2,7 @@
 
 Status: **ACTIVE**
 
-Decision IDs dùng xuyên suốt project. Không sửa lịch sử quyết định; nếu thay đổi, tạo decision mới supersede decision cũ.
+Decision IDs are append-only. A changed decision is superseded by a newer ID rather than rewritten.
 
 | ID | Decision | Current value | Status | Rationale / Source |
 |---|---|---|---|---|
@@ -12,25 +12,43 @@ Decision IDs dùng xuyên suốt project. Không sửa lịch sử quyết đị
 | DEC-0004 | Reservation statuses | PENDING, CONFIRMED, SEATED, COMPLETED, CANCELLED, NO_SHOW | CONFIRMED | Project overview |
 | DEC-0005 | Mobile strategy | Mobile-specific layout; not desktop scaling | CONFIRMED | Project overview |
 | DEC-0006 | Layout strategy | Editorial/asymmetric; avoid SaaS/card-heavy UI | CONFIRMED | Project overview |
-| DEC-0007 | MVP location model | Single location | PROPOSED | Source shows one location |
-| DEC-0008 | Currency | USD | OPEN / PROPOSED | `$` prices in source |
-| DEC-0009 | Timezone | America/New_York | OPEN / PROPOSED | +1 212 / Mercer Street inference |
-| DEC-0010 | Slot interval | 30 minutes | PROPOSED | Reservation example uses 30-minute intervals |
-| DEC-0011 | Standard reservation duration | 120 minutes | OPEN |
-| DEC-0012 | Regular guest range | 1–8 | OPEN / PROPOSED | Private dining starts around larger groups |
-| DEC-0013 | Advance booking window | 30 days | OPEN |
-| DEC-0014 | Same-day cutoff | 2 hours before slot | OPEN |
-| DEC-0015 | Cancellation cutoff | 24 hours | OPEN |
-| DEC-0016 | Deposit/payment | Not in MVP | PROPOSED |
-| DEC-0017 | Email confirmation | Include in MVP | PROPOSED |
-| DEC-0018 | Table assignment | Manual admin assignment in MVP | PROPOSED |
-| DEC-0019 | Availability model | Table-aware OR capacity-first | OPEN |
-| DEC-0020 | Dress code | Smart casual placeholder only | OPEN |
-| DEC-0021 | Special closure | Promote to MVP operational requirement | PROPOSED |
-| DEC-0022 | Production contact/address | Verify current source values | OPEN |
-| DEC-0023 | Primary language | English | PROPOSED |
-| DEC-0024 | Multi-language | Deferred post-MVP | PROPOSED |
-| DEC-0025 | Phase 7 content implementation | First-party headless content service: PostgreSQL + Nest API + minimal Admin editor; S3-compatible media + CDN | CONFIRMED | Phase 7 architecture preflight; see `docs/phase-7/content-architecture-decision.md` |
+| DEC-0007 | MVP location model | Single location | SUPERSEDED by DEC-0026 | Phase 8 freeze |
+| DEC-0008 | Currency | VND | PROPOSED | Current operating direction |
+| DEC-0009 | Timezone | Earlier inferred timezone | SUPERSEDED by DEC-0027 | Phase 8 freeze |
+| DEC-0010 | Slot interval | 30 minutes | SUPERSEDED by DEC-0029 | Phase 8 freeze |
+| DEC-0011 | Standard reservation duration | 120 minutes | SUPERSEDED by DEC-0029 | Phase 8 freeze |
+| DEC-0012 | Regular guest range | 1–8 | SUPERSEDED by DEC-0030 | Phase 8 freeze |
+| DEC-0013 | Advance booking window | 30 days | SUPERSEDED by DEC-0031 | Phase 8 freeze |
+| DEC-0014 | Same-day cutoff | 2 hours before slot | SUPERSEDED by DEC-0031 | Phase 8 freeze |
+| DEC-0015 | Guest self-service cancellation cutoff | 24 hours | OPEN | Not part of Phase 8 public API |
+| DEC-0016 | Deposit/payment | Not in MVP | CONFIRMED | Phase 8 scope |
+| DEC-0017 | Email confirmation | Deferred from booking transaction | PROPOSED | Delivery must be post-commit |
+| DEC-0018 | Table assignment | Manual admin assignment in MVP | SUPERSEDED by DEC-0032 | Phase 8 freeze |
+| DEC-0019 | Availability model | Earlier options | SUPERSEDED by DEC-0032 | Phase 8 freeze |
+| DEC-0020 | Dress code | Smart casual placeholder only | OPEN | Does not block booking engine |
+| DEC-0021 | Special closure | MVP operational requirement | SUPERSEDED by DEC-0033 | Phase 8 freeze |
+| DEC-0022 | Production contact/address | Verify current source values | OPEN | Does not block booking engine |
+| DEC-0023 | Primary language | Vietnamese | PROPOSED | Current operating direction |
+| DEC-0024 | Multi-language | Deferred post-MVP | CONFIRMED | MVP scope |
+| DEC-0025 | Phase 7 content implementation | First-party PostgreSQL + Nest content service and minimal Admin editor | CONFIRMED | Phase 7 architecture |
+| DEC-0026 | MVP location model | Single location | CONFIRMED | Phase 8.0 freeze, 2026-10-05 |
+| DEC-0027 | Restaurant timezone | `Asia/Ho_Chi_Minh`; business dates/times are restaurant-local, technical timestamps are UTC | CONFIRMED | Phase 8.0 freeze, 2026-10-05 |
+| DEC-0028 | Reservation lifecycle | Online create is `CONFIRMED`; allowed transitions are PENDING→CONFIRMED/CANCELLED, CONFIRMED→SEATED/CANCELLED/NO_SHOW, SEATED→COMPLETED; PENDING/CONFIRMED/SEATED consume capacity | CONFIRMED | Phase 8.0 freeze, 2026-10-05 |
+| DEC-0029 | Slot semantics | 30-minute interval, 120-minute duration, zero turn buffer, close time means service end, half-open overlap `[start,end)` | CONFIRMED | Phase 8.0 freeze, 2026-10-05 |
+| DEC-0030 | Regular online guest range | Inclusive 1–8; larger parties route to Private Dining/contact | CONFIRMED | Phase 8.0 freeze, 2026-10-05 |
+| DEC-0031 | Booking horizon | Restaurant-local today through today + 30 calendar days inclusive; same-day slot requires at least 120 minutes lead time | CONFIRMED | Phase 8.0 freeze, 2026-10-05 |
+| DEC-0032 | Availability/capacity model | `CAPACITY_FIRST`; operational capacity is data-driven; manual table assignment is outside availability | CONFIRMED | Phase 8.0 freeze, 2026-10-05 |
+| DEC-0033 | Special closures | Active full-day closure blocks the date; active partial closure removes overlapping slots | CONFIRMED | Phase 8.0 freeze, 2026-10-05 |
+| DEC-0034 | Reservation concurrency | Transactional revalidation under a PostgreSQL advisory transaction lock keyed by service date | CONFIRMED | Prevent overlapping-slot races |
+| DEC-0035 | Reservation idempotency | Required request key, normalized request hash, 24-hour bounded record; same key/body replays and changed body conflicts | CONFIRMED | Duplicate-submit protection |
+| DEC-0036 | Public reservation code | Server-generated non-PII `EO-` code with a database uniqueness constraint and collision retry | CONFIRMED | Safe public confirmation identifier |
+| DEC-0037 | Public input limits | E.164-compatible phone, normalized email/name, special request up to 1000 characters | CONFIRMED | Phase 8 server validation |
+
+## Phase 8 freeze effect
+
+DEC-0026 through DEC-0037 are authoritative for the Phase 8 reservation backend. Production cover capacity remains operational data and is deliberately not invented by a migration or application constant. Test/staging capacity may use an explicitly labelled fixture.
+
+Open cancellation, dress-code, contact, email-delivery, currency, and language decisions do not alter the Phase 8 core availability or creation transaction.
 
 ## Decision template
 
@@ -54,6 +72,6 @@ Status: PROPOSED | CONFIRMED | REJECTED | SUPERSEDED
 
 ## Rules
 
-- `OPEN` decisions thuộc Phase 0 phải được xử lý trước khi schema/domain implementation bị khóa.
-- Không hard-code một giá trị `OPEN` như business truth.
-- Một proposed default có thể dùng trong prototype, nhưng phải nằm trong config và có chú thích.
+- Resolve a blocking `OPEN` decision before freezing its dependent schema/domain behavior.
+- Do not hard-code an open value as production truth.
+- Keep operational values such as service capacity in data, not domain algorithms.
