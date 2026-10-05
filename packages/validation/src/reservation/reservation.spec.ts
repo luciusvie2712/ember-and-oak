@@ -16,12 +16,15 @@ describe("reservation validation", () => {
 
   it.each([
     [{ ...valid, guestCount: 0 }, "zero guests"],
-    [{ ...valid, guestCount: 9 }, "large parties"],
     [{ ...valid, date: "2026-02-30" }, "invalid dates"],
     [{ ...valid, guest: { ...valid.guest, email: "invalid" } }, "invalid email"],
     [{ ...valid, specialRequest: "x".repeat(1001) }, "long requests"],
   ])("rejects invalid input: %s", (input, _label) => {
     expect(createReservationSchema.safeParse(input).success).toBe(false);
+  });
+
+  it("accepts large-party request shape for domain handling", () => {
+    expect(createReservationSchema.safeParse({ ...valid, guestCount: 9 }).success).toBe(true);
   });
 
   it("rejects an invalid status", () => {

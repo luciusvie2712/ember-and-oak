@@ -21,7 +21,8 @@ export const reservationDateSchema = z
   );
 
 export const reservationTimeSchema = z.string().regex(timePattern);
-export const reservationGuestCountSchema = z.number().int().min(1).max(8);
+// The domain enforces the regular-party maximum and returns PARTY_TOO_LARGE.
+export const reservationGuestCountSchema = z.number().int().min(1);
 export const reservationNameSchema = z.string().trim().min(1).max(120);
 export const reservationEmailSchema = z.string().trim().toLowerCase().email().max(254);
 export const reservationPhoneSchema = z.string().trim().regex(e164Pattern);

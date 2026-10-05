@@ -12,6 +12,7 @@ type ClosureRow = {
   closure_type: SpecialClosureType;
   start_time: string | null;
   end_time: string | null;
+  reason: string;
   public_message: string | null;
 };
 
@@ -25,7 +26,7 @@ export class SpecialClosureRepository {
   ): Promise<SpecialClosure[]> {
     const sql = `SELECT id,
                         to_char(closure_date, 'YYYY-MM-DD') AS closure_date,
-                        closure_type, start_time, end_time, public_message
+                        closure_type, start_time, end_time, reason, public_message
                  FROM special_closures
                  WHERE closure_date = $1 AND is_active = true
                  ORDER BY start_time NULLS FIRST`;
@@ -36,6 +37,7 @@ export class SpecialClosureRepository {
       id: row.id,
       date: row.closure_date,
       type: row.closure_type,
+      reason: row.reason,
       ...(row.start_time ? { startTime: row.start_time.slice(0, 5) } : {}),
       ...(row.end_time ? { endTime: row.end_time.slice(0, 5) } : {}),
       ...(row.public_message ? { publicMessage: row.public_message } : {}),

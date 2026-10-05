@@ -9,5 +9,5 @@ export const availabilityQuerySchema = z.object({
 
 export const availabilityHttpQuerySchema = z.object({
   date: reservationDateSchema,
-  guests: z.coerce.number().int().min(1).max(8),
+  guests: z.coerce.number().int().min(1),
 });
