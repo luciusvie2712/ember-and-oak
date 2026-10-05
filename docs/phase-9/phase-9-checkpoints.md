@@ -9,7 +9,7 @@ Status: **IN PROGRESS**
 - [x] 9.2 Search form
 - [x] 9.3 Availability states
 - [x] 9.4 Slot selection
-- [ ] 9.5 Guest details
+- [x] 9.5 Guest details
 - [ ] 9.6 Submission / idempotency / conflict recovery
 - [ ] 9.7 Confirmation
 - [ ] 9.8 Responsive and accessibility verification
