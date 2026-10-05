@@ -8,7 +8,7 @@ export default defineConfig({
   webServer: [
     {
       command:
-        "cross-env NEXT_DIST_DIR=.next-e2e CONTENT_API_URL=http://127.0.0.1:4100 WEB_REVALIDATION_SECRET=phase7_test_revalidation_secret_123456 pnpm --filter @ember-and-oak/web e2e:serve",
+        "cross-env NEXT_DIST_DIR=.next-e2e CONTENT_API_URL=http://127.0.0.1:4100 NEXT_PUBLIC_API_URL=http://127.0.0.1:4100 WEB_REVALIDATION_SECRET=phase7_test_revalidation_secret_123456 pnpm --filter @ember-and-oak/web e2e:serve",
       port: 3100,
       reuseExistingServer: false,
     },
@@ -20,7 +20,7 @@ export default defineConfig({
     },
     {
       command:
-        "cross-env PORT=4100 DATABASE_URL=postgresql://ember:local_only_password@localhost:5432/ember_and_oak ADMIN_CONTENT_API_KEY=phase7_test_content_api_key_1234567 WEB_REVALIDATION_URL=http://127.0.0.1:3100/api/content/revalidate WEB_REVALIDATION_SECRET=phase7_test_revalidation_secret_123456 pnpm --filter @ember-and-oak/api start:e2e",
+        "cross-env PORT=4100 DATABASE_URL=postgresql://ember:local_only_password@localhost:5432/ember_and_oak CORS_ORIGINS=http://127.0.0.1:3100 ADMIN_CONTENT_API_KEY=phase7_test_content_api_key_1234567 WEB_REVALIDATION_URL=http://127.0.0.1:3100/api/content/revalidate WEB_REVALIDATION_SECRET=phase7_test_revalidation_secret_123456 pnpm --filter @ember-and-oak/api start:e2e",
       port: 4100,
       reuseExistingServer: false,
     },

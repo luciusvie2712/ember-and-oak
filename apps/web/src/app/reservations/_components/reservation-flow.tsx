@@ -172,7 +172,7 @@ export function ReservationFlow() {
                   {conflictMessage}
                 </p>
               ) : null}
-              {step === "SEARCH" || step === "SEARCHING" || step === "AVAILABILITY" ? (
+              {step !== "CONFIRMED" ? (
                 <div ref={slotsRef}>
                   <AvailabilityResults
                     result={availability}
@@ -180,11 +180,14 @@ export function ReservationFlow() {
                     error={availabilityError}
                     onRetry={() => void runSearch(search)}
                   >
-                    {step === "AVAILABILITY" ? (
+                    {step === "AVAILABILITY" ||
+                    step === "GUEST_DETAILS" ||
+                    step === "SUBMITTING" ? (
                       <ReservationSlotList
                         slots={availability?.slots ?? []}
                         selected={selectedSlot}
                         onSelect={chooseSlot}
+                        disabled={step === "SUBMITTING"}
                       />
                     ) : null}
                   </AvailabilityResults>
