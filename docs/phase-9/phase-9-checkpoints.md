@@ -6,7 +6,7 @@ Status: **IN PROGRESS**
 
 - [x] 9.0 Preflight and API contract
 - [x] 9.1 Reservation API client
-- [ ] 9.2 Search form
+- [x] 9.2 Search form
 - [ ] 9.3 Availability states
 - [ ] 9.4 Slot selection
 - [ ] 9.5 Guest details
