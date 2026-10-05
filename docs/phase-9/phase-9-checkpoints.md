@@ -8,7 +8,7 @@ Status: **IN PROGRESS**
 - [x] 9.1 Reservation API client
 - [x] 9.2 Search form
 - [x] 9.3 Availability states
-- [ ] 9.4 Slot selection
+- [x] 9.4 Slot selection
 - [ ] 9.5 Guest details
 - [ ] 9.6 Submission / idempotency / conflict recovery
 - [ ] 9.7 Confirmation
