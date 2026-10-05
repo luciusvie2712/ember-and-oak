@@ -5,7 +5,7 @@ Status: **IN PROGRESS**
 ## Checkpoints
 
 - [x] 9.0 Preflight and API contract
-- [ ] 9.1 Reservation API client
+- [x] 9.1 Reservation API client
 - [ ] 9.2 Search form
 - [ ] 9.3 Availability states
 - [ ] 9.4 Slot selection

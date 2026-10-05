@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:integration": "vitest run --passWithNoTests --exclude '**/*.spec.tsx'",
+    "test:integration": "vitest run --passWithNoTests --exclude '**/*.spec.ts' --exclude '**/*.spec.tsx'",
     "clean": "node -e \"require('node:fs').rmSync('.next',{recursive:true,force:true})\""
   },
   "dependencies": {
