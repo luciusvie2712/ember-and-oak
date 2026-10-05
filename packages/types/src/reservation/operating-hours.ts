@@ -11,6 +11,8 @@ export type SpecialClosure = Readonly<{
   id: string;
   date: string;
   type: SpecialClosureType;
+  /** Internal operational reason; never use as guest-facing copy. */
+  reason: string;
   startTime?: string;
   endTime?: string;
   publicMessage?: string;

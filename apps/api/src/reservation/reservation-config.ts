@@ -8,6 +8,7 @@ export const reservationConfig = {
   minimumGuests: 1,
   maximumGuests: 8,
   idempotencyRetentionHours: 24,
+  idempotencyCleanupIntervalMs: 60 * 60 * 1000,
 } as const;
 
 export const capacityConsumingStatuses = [

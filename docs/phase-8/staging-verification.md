@@ -16,6 +16,9 @@ Status: **PENDING**
 - [ ] A valid create request returns `201`, `CONFIRMED`, and an `EO-` reservation code.
 - [ ] Repeating the same key/body returns the same logical reservation.
 - [ ] Reusing the key with a changed body returns `409 IDEMPOTENCY_CONFLICT`.
+- [ ] GET availability and POST reservation with 9 guests both return `400 PARTY_TOO_LARGE`.
+- [ ] An expired idempotency row is removed by the deployed maintenance service (confirm the cleanup run in the staging database).
+- [ ] A partial closure's persisted `reason` is retrievable through the repository/canonical model.
 - [ ] Two capacity-competing requests cannot commit covers above service capacity.
 - [ ] Failed creation leaves no orphan customer, reservation, or successful idempotency record.
 - [ ] Render/application logs contain no full guest email, phone, special request, secrets, SQL, or stack trace.

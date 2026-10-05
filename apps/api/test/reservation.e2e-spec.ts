@@ -10,6 +10,8 @@ import { AppModule } from '../src/app.module.js';
 import { ContentDatabaseService } from '../src/database/content-database.service.js';
 import { configureHttpApplication } from '../src/http/configure-http.js';
 import { ReservationRepository } from '../src/reservation/reservation.repository.js';
+import { ReservationIdempotencyMaintenanceService } from '../src/reservation/reservation-idempotency-maintenance.service.js';
+import { SpecialClosureRepository } from '../src/reservation/special-closure.repository.js';
 
 function futureDateForDay(dayOfWeek: number, minimumDays = 7): string {
   const localToday = new Intl.DateTimeFormat('en-CA', {
@@ -30,6 +32,8 @@ describe('Phase 8 reservation lifecycle (e2e)', () => {
   let pool: Pool;
   let database: ContentDatabaseService;
   let reservations: ReservationRepository;
+  let closures: SpecialClosureRepository;
+  let idempotencyMaintenance: ReservationIdempotencyMaintenanceService;
   let previousCapacities: Array<{
     day_of_week: number;
     capacity: number;
@@ -48,6 +52,8 @@ describe('Phase 8 reservation lifecycle (e2e)', () => {
     pool = new Pool({ connectionString: process.env.DATABASE_URL });
     database = app.get(ContentDatabaseService);
     reservations = app.get(ReservationRepository);
+    closures = app.get(SpecialClosureRepository);
+    idempotencyMaintenance = app.get(ReservationIdempotencyMaintenanceService);
     previousCapacities = (
       await pool.query<{
         day_of_week: number;
@@ -234,6 +240,15 @@ describe('Phase 8 reservation lifecycle (e2e)', () => {
                'phase8-integration-partial', true)`,
       [friday],
     );
+    expect(await closures.findForDate(friday)).toContainEqual(
+      expect.objectContaining({
+        date: friday,
+        type: 'PARTIAL_DAY',
+        startTime: '18:00',
+        endTime: '19:00',
+        reason: 'phase8-integration-partial',
+      }),
+    );
     const partial = await request(app.getHttpServer())
       .get(`/api/v1/reservations/availability?date=${friday}&guests=2`)
       .expect(200);
@@ -247,6 +262,48 @@ describe('Phase 8 reservation lifecycle (e2e)', () => {
         (slot: { startTime: string }) => slot.startTime === '19:00',
       ),
     ).toBe(true);
+  });
+
+  it('returns PARTY_TOO_LARGE through both public endpoints', async () => {
+    const search = await request(app.getHttpServer())
+      .get(`/api/v1/reservations/availability?date=${date}&guests=9`)
+      .expect(400);
+    expect(search.body.error.code).toBe('PARTY_TOO_LARGE');
+
+    const email = `${emailPrefix}large-party@example.invalid`;
+    const create = await request(app.getHttpServer())
+      .post('/api/v1/reservations')
+      .set('Idempotency-Key', 'large-party-api-key')
+      .send({
+        date,
+        startTime: '19:00',
+        guestCount: 9,
+        guest: { name: 'Large Party Test', email, phone: '+84900000000' },
+      })
+      .expect(400);
+    expect(create.body.error.code).toBe('PARTY_TOO_LARGE');
+    const customers = await pool.query<{ count: string }>(
+      'SELECT count(*)::text AS count FROM customers WHERE email = $1',
+      [email],
+    );
+    expect(customers.rows[0]?.count).toBe('0');
+  });
+
+  it('deletes expired idempotency rows regardless of key reuse', async () => {
+    const key = 'phase8-expired-cleanup-integration';
+    await pool.query(
+      `INSERT INTO reservation_idempotency
+         (idempotency_key, request_hash, created_at, expires_at)
+       VALUES ($1, 'fixture-hash', now() - interval '48 hours',
+               now() - interval '24 hours')`,
+      [key],
+    );
+    await idempotencyMaintenance.cleanupExpired();
+    const result = await pool.query<{ count: string }>(
+      'SELECT count(*)::text AS count FROM reservation_idempotency WHERE idempotency_key = $1',
+      [key],
+    );
+    expect(result.rows[0]?.count).toBe('0');
   });
 
   function createRequest(
@@ -275,7 +332,7 @@ describe('Phase 8 reservation lifecycle (e2e)', () => {
     await pool.query(
       `DELETE FROM reservation_idempotency
        WHERE idempotency_key IN
-         ('happy-path-key', 'replay-key', 'race-left-key', 'race-right-key', 'rollback-validation-key')`,
+         ('happy-path-key', 'replay-key', 'race-left-key', 'race-right-key', 'rollback-validation-key', 'large-party-api-key', 'phase8-expired-cleanup-integration')`,
     );
     await pool.query(
       `DELETE FROM reservations WHERE customer_id IN
