@@ -67,7 +67,7 @@ export function GuestDetailsForm({
       }
       setErrors(nextErrors);
       const first = (Object.keys(fields) as GuestField[]).find((field) => nextErrors[field]);
-      if (first) inputRefs.current[first]?.focus();
+      if (first) requestAnimationFrame(() => inputRefs.current[first]?.focus());
       return;
     }
     setErrors({});
