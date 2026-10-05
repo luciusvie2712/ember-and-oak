@@ -1,6 +1,6 @@
 # Phase 8 Checkpoints
 
-Status: **8.0–8.9 COMPLETE LOCALLY; 8.10 PENDING STAGING ACCESS**
+Status: **CLOSED** (owner-confirmed staging verification, 2026-10-05)
 
 ## Implementation
 
@@ -14,7 +14,7 @@ Status: **8.0–8.9 COMPLETE LOCALLY; 8.10 PENDING STAGING ACCESS**
 - [x] 8.7 request idempotency and date-level PostgreSQL advisory locking
 - [x] 8.8 public availability and create endpoints
 - [x] 8.9 unit, integration, idempotency, concurrency, and rollback coverage
-- [ ] 8.10 staging deployment and evidence
+- [x] 8.10 staging deployment and verification (confirmed by project owner)
 
 ## Local evidence
 
@@ -32,4 +32,4 @@ Counts above describe the focused runs recorded during implementation. The final
 
 ## Close condition
 
-Phase 8 must not be marked closed until the staging checklist in `staging-verification.md` has real endpoint, database, concurrency, and PII/log evidence. No staging URL or platform access was supplied during local implementation.
+The project owner confirmed on 2026-10-05 that all Phase 8 staging checks were completed and authorized closing the phase. The automated smoke run and public API checks recorded in `staging-verification.md` were observed directly; the remaining staging checks are owner-attested, with raw database and provider-log artifacts not attached to this repository.

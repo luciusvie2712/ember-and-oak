@@ -1,6 +1,6 @@
 # Phase 8 Reservation Architecture
 
-Status: **IMPLEMENTED LOCALLY — STAGING VERIFICATION PENDING**
+Status: **PHASE 8 CLOSED — owner-confirmed staging verification, 2026-10-05**
 
 ## Canonical contracts
 

@@ -1,6 +1,6 @@
 # Phase 8 Staging Verification
 
-Status: **PENDING**
+Status: **CLOSED — owner-verified on 2026-10-05**
 
 ## Preconditions
 
@@ -11,18 +11,20 @@ Status: **PENDING**
 
 ## Evidence checklist
 
-- [ ] Migration exists in `schema_migrations` and all Phase 8 tables/indexes exist.
-- [ ] Availability response has the correct date, timezone, and latest service-end-safe slot.
-- [ ] A valid create request returns `201`, `CONFIRMED`, and an `EO-` reservation code.
-- [ ] Repeating the same key/body returns the same logical reservation.
-- [ ] Reusing the key with a changed body returns `409 IDEMPOTENCY_CONFLICT`.
+The project owner confirmed completion of all checks below. Only the linked automated smoke run and the public API checks in the observed-evidence section were independently observed here; raw database and provider-log artifacts were not supplied to the repository.
+
+- [x] Migration exists in `schema_migrations` and all Phase 8 tables/indexes exist.
+- [x] Availability response has the correct date, timezone, and latest service-end-safe slot.
+- [x] A valid create request returns `201`, `CONFIRMED`, and an `EO-` reservation code.
+- [x] Repeating the same key/body returns the same logical reservation.
+- [x] Reusing the key with a changed body returns `409 IDEMPOTENCY_CONFLICT`.
 - [x] GET availability and POST reservation with 9 guests both return `400 PARTY_TOO_LARGE`.
-- [ ] An expired idempotency row is removed by the deployed maintenance service (confirm the cleanup run in the staging database).
-- [ ] A partial closure's persisted `reason` is retrievable through the repository/canonical model.
-- [ ] Two capacity-competing requests cannot commit covers above service capacity.
-- [ ] Failed creation leaves no orphan customer, reservation, or successful idempotency record.
-- [ ] Render/application logs contain no full guest email, phone, special request, secrets, SQL, or stack trace.
-- [ ] Test records and staging-only capacity fixtures are removed or retained according to the staging data policy.
+- [x] An expired idempotency row is removed by the deployed maintenance service (confirm the cleanup run in the staging database).
+- [x] A partial closure's persisted `reason` is retrievable through the repository/canonical model.
+- [x] Two capacity-competing requests cannot commit covers above service capacity.
+- [x] Failed creation leaves no orphan customer, reservation, or successful idempotency record.
+- [x] Render/application logs contain no full guest email, phone, special request, secrets, SQL, or stack trace.
+- [x] Test records and staging-only capacity fixtures are removed or retained according to the staging data policy.
 
 ## Suggested PowerShell smoke check
 
@@ -58,4 +60,4 @@ Repeat the POST with the same `$Key` and `$Body`, then run the documented compet
 - Against `https://ember-and-oak-api-staging-kxw3.onrender.com`, GET `/api/v1/reservations/availability?date=2026-10-13&guests=9` returned HTTP 400 with `PARTY_TOO_LARGE`.
 - POST `/api/v1/reservations` with 9 guests and an `example.invalid` test identity returned HTTP 400 with `PARTY_TOO_LARGE`.
 - GET availability for 2 guests on 2026-10-13 returned HTTP 200 with `timezone: Asia/Ho_Chi_Minh`, `status: NO_AVAILABILITY`, and no slots. No capacity fixture or valid create was exercised.
-- Migration/schema, expired-row maintenance in the deployed database, valid create/replay/conflict, concurrency, rollback, and PII/log checks remain unverified on staging. Staging database and provider-log access are required; Phase 8 is **not closed**.
+- At the time of these directly observed checks, migration/schema, expired-row maintenance in the deployed database, valid create/replay/conflict, concurrency, rollback, and PII/log checks had not been independently observed. The project owner subsequently confirmed all staging checks completed and requested Phase 8 closure on 2026-10-05; those additional checks are recorded as owner-attested rather than independently evidenced in this repository.
