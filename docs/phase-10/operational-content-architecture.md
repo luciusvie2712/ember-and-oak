@@ -16,3 +16,5 @@ Private Dining editorial content uses the existing draft/publish media pipeline.
 ## Publication and staging
 
 The local seed may include clearly marked editorial fixtures. It must not publish unverified production contact data or open policies. Staging verification must capture a deployed revision, sanitized API/UI and database evidence, duplicate-submit behavior, closure consistency, and a PII-log review before Phase 10 closes.
+
+The Private Dining fixture is published for local/automated presentation tests and uses the source-backed capacity labels. No operations document is seeded. Until the business confirms `DEC-0038` and publishes an operations document with slug `primary`, `GET /api/v1/operations` returns 404 and the web shows an explicit unpublished-contact state. Home location and Footer omit contact details rather than substitute fixture data.

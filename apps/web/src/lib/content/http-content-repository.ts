@@ -3,6 +3,7 @@ import type {
   HomeContent,
   MediaAsset,
   MenuContent,
+  PrivateDiningContent,
   StoryContent,
 } from "@ember-and-oak/types";
 import {
@@ -10,6 +11,7 @@ import {
   homeContentSchema,
   mediaAssetSchema,
   menuContentSchema,
+  privateDiningContentSchema,
   storyContentSchema,
   type ZodType,
 } from "@ember-and-oak/validation";
@@ -99,5 +101,13 @@ export class HttpContentRepository implements ContentRepository {
       "menu",
       "chef",
     ]);
+  }
+
+  getPublishedPrivateDining(slug = "private-dining"): Promise<PrivateDiningContent | null> {
+    return fetchContent(
+      `api/v1/content/private-dining/${encodeURIComponent(slug)}`,
+      privateDiningContentSchema,
+      ["private-dining", `private-dining:${slug}`, "media"],
+    );
   }
 }

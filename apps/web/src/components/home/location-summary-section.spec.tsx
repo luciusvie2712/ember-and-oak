@@ -5,6 +5,6 @@ import { LocationSummarySection } from "./location-summary-section";
 
 describe("LocationSummarySection", () => {
   it("does not invent operational content when no canonical record exists", () => {
-    expect(renderToStaticMarkup(<LocationSummarySection />)).toBe("");
+    expect(renderToStaticMarkup(<LocationSummarySection operations={null} />)).toBe("");
   });
 });

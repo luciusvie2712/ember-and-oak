@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { publicNavigation, reservationHref } from "@/config/navigation";
+import { getPublicOperations } from "@/lib/operations/operations-repository";
 
 const storyNavigation = publicNavigation.filter(
   (item) => item.href === "/menu" || item.href === "/private-dining" || item.href === "/contact",
@@ -17,7 +18,8 @@ const reservationNavigation = [
   },
 ] as const;
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const operations = await getPublicOperations().catch(() => null);
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
@@ -40,6 +42,16 @@ export function SiteFooter() {
 
           <section aria-labelledby="footer-visit-heading" className="site-footer__group">
             <h2 id="footer-visit-heading">Visit</h2>
+            {operations ? (
+              <address>
+                <p>{operations.location.name}</p>
+                <p>{[operations.location.addressLine1, operations.location.city].join(", ")}</p>
+                <a href={`tel:${operations.contact.phoneE164}`}>
+                  {operations.contact.phoneDisplay}
+                </a>
+                <a href={`mailto:${operations.contact.email}`}>{operations.contact.email}</a>
+              </address>
+            ) : null}
           </section>
 
           <section aria-labelledby="footer-reservations-heading" className="site-footer__group">

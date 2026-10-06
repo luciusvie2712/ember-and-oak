@@ -8,12 +8,16 @@ import { ReservationCtaSection } from "@/components/home/reservation-cta-section
 import { Reveal } from "@/components/home/reveal";
 import { SignatureMenuSection } from "@/components/home/signature-menu-section";
 import { getContentRepository } from "@/lib/content";
+import { getPublicOperations } from "@/lib/operations/operations-repository";
 import { connection } from "next/server";
 
 export default async function HomePage() {
   await connection();
   const repository = await getContentRepository();
-  const content = await repository.getPublishedHome().catch(() => null);
+  const [content, operations] = await Promise.all([
+    repository.getPublishedHome().catch(() => null),
+    getPublicOperations().catch(() => null),
+  ]);
 
   if (!content) {
     return (
@@ -46,7 +50,7 @@ export default async function HomePage() {
       <Reveal>
         <ReservationCtaSection home={content.home} />
       </Reveal>
-      <LocationSummarySection />
+      <LocationSummarySection operations={operations} />
     </>
   );
 }

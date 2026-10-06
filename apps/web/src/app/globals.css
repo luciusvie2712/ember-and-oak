@@ -622,6 +622,14 @@ a {
   gap: var(--space-2);
   list-style: none;
 }
+.site-footer__group address {
+  display: grid;
+  gap: var(--space-2);
+  font-style: normal;
+}
+.site-footer__group address p {
+  margin: 0;
+}
 .site-footer__group a {
   text-decoration-color: transparent;
   text-underline-offset: 0.3em;
