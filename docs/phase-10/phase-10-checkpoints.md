@@ -3,7 +3,7 @@
 Status: **IN PROGRESS**
 
 - [x] 10.0 Preflight and decisions
-- [ ] 10.1 Contracts and validation
+- [x] 10.1 Contracts and validation
 - [ ] 10.2 Private Dining content pipeline
 - [ ] 10.3 Operational public API
 - [ ] 10.4 Private Event persistence
