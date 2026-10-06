@@ -7,7 +7,16 @@ import { z } from "@ember-and-oak/validation";
 import { archiveAdminDocument, publishAdminDocument, saveAdminDraft } from "@/lib/content-api";
 
 const identitySchema = z.object({
-  type: z.enum(["menu", "story", "gallery", "home", "chef", "media"]),
+  type: z.enum([
+    "menu",
+    "story",
+    "gallery",
+    "home",
+    "chef",
+    "media",
+    "private-dining",
+    "operations",
+  ]),
   slug: z.string().trim().min(1).max(128),
 });
 

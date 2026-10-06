@@ -11,6 +11,15 @@ type AdminDocument = Readonly<{
   publishedAt?: string | undefined;
 }>;
 
+export class ContentApiError extends Error {
+  constructor(
+    readonly status: number,
+    body: string,
+  ) {
+    super(`Content API ${status}: ${body.slice(0, 500)}`);
+  }
+}
+
 function apiConfiguration() {
   const baseUrl = process.env.CONTENT_API_URL;
   const apiKey = process.env.ADMIN_CONTENT_API_KEY;
@@ -32,7 +41,7 @@ async function request(path: string, init?: RequestInit): Promise<unknown> {
   });
   if (!response.ok) {
     const body = await response.text();
-    throw new Error(`Content API ${response.status}: ${body.slice(0, 500)}`);
+    throw new ContentApiError(response.status, body);
   }
   const envelope = (await response.json()) as { data: unknown };
   return envelope.data;

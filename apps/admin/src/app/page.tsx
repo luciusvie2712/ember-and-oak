@@ -9,8 +9,9 @@ export default function Page() {
           <p className="eyebrow">Admin · engineering foundation</p>
           <h1>Ember &amp; Oak Admin</h1>
           <p>
-            Phase 7 content publishing is available as a minimal protected editor. Reservation
-            management remains scheduled for the full backoffice phase.
+            Canonical content publishing includes Private Dining and Operations. Enter only verified
+            contact information before publishing Operations. Reservation management remains
+            scheduled for the full backoffice phase.
           </p>
           <Link href="/content/menu/dinner">Open content editor</Link>
         </Stack>
