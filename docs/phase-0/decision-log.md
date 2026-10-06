@@ -43,6 +43,9 @@ Decision IDs are append-only. A changed decision is superseded by a newer ID rat
 | DEC-0035 | Reservation idempotency | Required request key, normalized request hash, 24-hour bounded record; same key/body replays and changed body conflicts | CONFIRMED | Duplicate-submit protection |
 | DEC-0036 | Public reservation code | Server-generated non-PII `EO-` code with a database uniqueness constraint and collision retry | CONFIRMED | Safe public confirmation identifier |
 | DEC-0037 | Public input limits | E.164-compatible phone, normalized email/name, special request up to 1000 characters | CONFIRMED | Phase 8 server validation |
+| DEC-0038 | Production contact publication | Address, email, phone, and directions URL require business confirmation before publication | OPEN | Phase 10 contact and operational-content gate; extends DEC-0022 |
+| DEC-0039 | Private-event enquiry delivery | PostgreSQL commit is authoritative; notification is optional downstream delivery; provider and recipient remain undecided | CONFIRMED | Phase 10 transactional workflow; no enquiry lost on notification failure |
+| DEC-0040 | Event type and budget input | Bounded free text until business event taxonomy and currency are confirmed | CONFIRMED | Avoid invented enums or monetary normalization in Phase 10 |
 
 ## Phase 8 freeze effect
 
