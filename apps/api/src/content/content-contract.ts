@@ -4,10 +4,14 @@ import {
   homeContentSchema,
   mediaAssetSchema,
   menuContentSchema,
+  operationalEditorialContentSchema,
+  privateDiningContentSchema,
   publishedChefProfileContentSchema,
   publishedGalleryContentSchema,
   publishedHomeContentSchema,
   publishedMenuContentSchema,
+  publishedOperationalEditorialContentSchema,
+  publishedPrivateDiningContentSchema,
   publishedStoryContentSchema,
   storyContentSchema,
   z,
@@ -20,6 +24,8 @@ export const contentDocumentTypeSchema = z.enum([
   'home',
   'chef',
   'media',
+  'private-dining',
+  'operations',
 ]);
 
 export type ContentDocumentType = z.infer<typeof contentDocumentTypeSchema>;
@@ -31,6 +37,8 @@ export const draftSchemas = {
   home: homeContentSchema,
   chef: chefProfileContentSchema,
   media: mediaAssetSchema,
+  'private-dining': privateDiningContentSchema,
+  operations: operationalEditorialContentSchema,
 } as const;
 
 export const publishedSchemas = {
@@ -40,6 +48,8 @@ export const publishedSchemas = {
   home: publishedHomeContentSchema,
   chef: publishedChefProfileContentSchema,
   media: mediaAssetSchema,
+  'private-dining': publishedPrivateDiningContentSchema,
+  operations: publishedOperationalEditorialContentSchema,
 } as const;
 
 export function invalidationTargets(type: ContentDocumentType, slug: string) {
@@ -57,10 +67,28 @@ export function invalidationTargets(type: ContentDocumentType, slug: string) {
       return { tags: ['gallery'], paths: ['/gallery'] };
     case 'home':
       return { tags: ['home'], paths: ['/'] };
+    case 'private-dining':
+      return {
+        tags: ['private-dining', `private-dining:${slug}`],
+        paths: ['/private-dining'],
+      };
+    case 'operations':
+      return {
+        tags: ['operations'],
+        paths: ['/', '/contact', '/reservations', '/private-dining'],
+      };
     case 'media':
       return {
-        tags: ['media', `media:${slug}`, 'menu', 'story', 'gallery', 'home'],
-        paths: ['/menu', '/our-story', '/gallery', '/'],
+        tags: [
+          'media',
+          `media:${slug}`,
+          'menu',
+          'story',
+          'gallery',
+          'home',
+          'private-dining',
+        ],
+        paths: ['/menu', '/our-story', '/gallery', '/', '/private-dining'],
       };
   }
 }

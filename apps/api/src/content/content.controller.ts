@@ -52,6 +52,16 @@ export class ContentController {
     if (!data) throw new NotFoundException('Published media was not found');
     return { data };
   }
+
+  @Get('private-dining/:slug')
+  async getPrivateDining(@Param('slug') slug: string) {
+    const data = await this.content.getPrivateDining(slug);
+    if (!data)
+      throw new NotFoundException(
+        'Published Private Dining content was not found',
+      );
+    return { data };
+  }
 }
 
 @Controller('v1/admin/content')

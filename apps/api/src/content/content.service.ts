@@ -4,6 +4,8 @@ import type {
   HomeContent,
   MediaAsset,
   MenuContent,
+  OperationalEditorialContent,
+  PrivateDiningContent,
   StoryContent,
 } from '@ember-and-oak/types';
 import {
@@ -12,9 +14,13 @@ import {
   homeContentSchema,
   mediaAssetSchema,
   menuContentSchema,
+  operationalEditorialContentSchema,
+  privateDiningContentSchema,
   publishedGalleryContentSchema,
   publishedHomeContentSchema,
   publishedMenuContentSchema,
+  publishedOperationalEditorialContentSchema,
+  publishedPrivateDiningContentSchema,
   publishedStoryContentSchema,
   storyContentSchema,
 } from '@ember-and-oak/validation';
@@ -226,6 +232,43 @@ export class ContentService {
   async getMedia(id: string): Promise<MediaAsset | null> {
     const raw = await this.getPublishedRaw('media', id);
     return raw ? mediaAssetSchema.parse(raw) : null;
+  }
+
+  async getPrivateDining(slug: string): Promise<PrivateDiningContent | null> {
+    const raw = await this.getPublishedRaw('private-dining', slug);
+    if (!raw) return null;
+    const stored = privateDiningContentSchema.parse(raw);
+    const media = await this.mediaMap();
+    const heroMedia = media.get(stored.page.heroMediaId);
+    if (!heroMedia)
+      throw new NotFoundException(
+        'Published Private Dining hero media was not found',
+      );
+    const experiences = [...stored.experiences]
+      .sort((left, right) => byDisplayOrder(left.experience, right.experience))
+      .map((entry) => {
+        const resolved = media.get(entry.experience.mediaId);
+        if (!resolved)
+          throw new NotFoundException(
+            'Published Private Dining media was not found',
+          );
+        return { experience: entry.experience, media: resolved };
+      });
+    return publishedPrivateDiningContentSchema.parse({
+      page: stored.page,
+      heroMedia,
+      experiences,
+    });
+  }
+
+  async getOperations(
+    slug = 'primary',
+  ): Promise<OperationalEditorialContent | null> {
+    const raw = await this.getPublishedRaw('operations', slug);
+    if (!raw) return null;
+    return publishedOperationalEditorialContentSchema.parse(
+      operationalEditorialContentSchema.parse(raw),
+    );
   }
 
   async getAdminDocument(typeValue: string, slug: string) {

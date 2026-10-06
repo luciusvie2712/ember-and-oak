@@ -3,6 +3,7 @@ import { Catch, HttpException, HttpStatus } from '@nestjs/common';
 import type { Response } from 'express';
 
 import type { RequestWithId } from './request-context.js';
+import { PrivateEventDomainError } from '../private-event/private-event.errors.js';
 import { ReservationDomainError } from '../reservation/reservation.errors.js';
 
 @Catch()
@@ -29,13 +30,15 @@ export class ApiExceptionFilter implements ExceptionFilter {
       INTERNAL_ERROR: HttpStatus.INTERNAL_SERVER_ERROR,
     };
     const status =
-      exception instanceof ReservationDomainError
+      exception instanceof ReservationDomainError ||
+      exception instanceof PrivateEventDomainError
         ? (domainStatus[exception.code] ?? HttpStatus.INTERNAL_SERVER_ERROR)
         : exception instanceof HttpException
           ? exception.getStatus()
           : HttpStatus.INTERNAL_SERVER_ERROR;
     const code =
-      exception instanceof ReservationDomainError
+      exception instanceof ReservationDomainError ||
+      exception instanceof PrivateEventDomainError
         ? exception.code
         : status === HttpStatus.BAD_REQUEST
           ? 'VALIDATION_ERROR'
@@ -43,7 +46,8 @@ export class ApiExceptionFilter implements ExceptionFilter {
             ? 'INTERNAL_ERROR'
             : 'REQUEST_ERROR';
     const message =
-      exception instanceof ReservationDomainError
+      exception instanceof ReservationDomainError ||
+      exception instanceof PrivateEventDomainError
         ? exception.message
         : status === HttpStatus.BAD_REQUEST
           ? 'Request validation failed'

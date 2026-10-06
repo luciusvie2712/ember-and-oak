@@ -4,12 +4,12 @@ import { Pool } from 'pg';
 
 import { loadEnvironment } from '../config/environment.js';
 import { publishedSchemas } from './content-contract.js';
-import { phaseSevenSeedDocuments } from './seed-data.js';
+import { seedDocuments } from './seed-data.js';
 
 async function seed(): Promise<void> {
   const pool = new Pool({ connectionString: loadEnvironment().DATABASE_URL });
   try {
-    for (const document of phaseSevenSeedDocuments) {
+    for (const document of seedDocuments) {
       const canonical = publishedSchemas[document.type].parse(document.content);
       await pool.query(
         `INSERT INTO content_documents

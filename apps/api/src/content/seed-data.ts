@@ -4,6 +4,7 @@ import type {
   HomeContent,
   MediaAsset,
   MenuContent,
+  PrivateDiningContent,
   StoryContent,
 } from '@ember-and-oak/types';
 
@@ -451,7 +452,75 @@ const homeContent: HomeContent = {
   ],
 };
 
-export const phaseSevenSeedDocuments: readonly Readonly<{
+const privateDiningContent: PrivateDiningContent = {
+  page: {
+    id: 'private-dining-page',
+    slug: 'private-dining',
+    heroHeading: 'Private Dining',
+    heroDescription:
+      'A more personal way to gather around the Ember & Oak table.',
+    heroMediaId: seedMedia.privateDining.id,
+    introBody:
+      'Make room for an evening shaped around your guests, the season, and the occasion.',
+    enquiryHeading: 'Plan Your Event',
+    enquiryBody:
+      'Tell us what you have in mind. Our team will follow up about the possibilities.',
+    seo: { title: 'Private Dining | Ember & Oak' },
+    publishState: 'PUBLISHED',
+  },
+  heroMedia: seedMedia.privateDining,
+  experiences: [
+    {
+      experience: {
+        id: 'private-room',
+        name: 'Private Room',
+        slug: 'private-room',
+        description:
+          'A secluded setting for a gathering that feels entirely your own.',
+        capacityMin: 12,
+        capacityMax: 20,
+        capacityLabel: '12–20 guests',
+        mediaId: seedMedia.privateDining.id,
+        displayOrder: 0,
+        publishState: 'PUBLISHED',
+      },
+      media: seedMedia.privateDining,
+    },
+    {
+      experience: {
+        id: 'chefs-table',
+        name: "Chef's Table",
+        slug: 'chefs-table',
+        description:
+          'An intimate view of the kitchen and the craft behind each course.',
+        capacityMin: 6,
+        capacityMax: 8,
+        capacityLabel: '6–8 guests',
+        mediaId: seedMedia.chef.id,
+        displayOrder: 1,
+        publishState: 'PUBLISHED',
+      },
+      media: seedMedia.chef,
+    },
+    {
+      experience: {
+        id: 'full-buyout',
+        name: 'Full Restaurant Buyout',
+        slug: 'full-buyout',
+        description:
+          'The full dining room, ready for a remarkable shared evening.',
+        capacityMax: 80,
+        capacityLabel: 'Up to 80 guests',
+        mediaId: seedMedia.atmosphere.id,
+        displayOrder: 2,
+        publishState: 'PUBLISHED',
+      },
+      media: seedMedia.atmosphere,
+    },
+  ],
+};
+
+export const seedDocuments: readonly Readonly<{
   type: ContentDocumentType;
   slug: string;
   content: unknown;
@@ -466,4 +535,9 @@ export const phaseSevenSeedDocuments: readonly Readonly<{
   { type: 'story', slug: 'our-story', content: storyContent },
   { type: 'gallery', slug: 'gallery', content: galleryContent },
   { type: 'home', slug: 'home', content: homeContent },
+  {
+    type: 'private-dining',
+    slug: 'private-dining',
+    content: privateDiningContent,
+  },
 ];

@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
 import { invalidationTargets, publishedSchemas } from './content-contract.js';
-import { phaseSevenSeedDocuments } from './seed-data.js';
+import { seedDocuments } from './seed-data.js';
 
 describe('Phase 7 content publication', () => {
   it('validates every seed document through its public contract', () => {
-    for (const document of phaseSevenSeedDocuments) {
+    for (const document of seedDocuments) {
       expect(() =>
         publishedSchemas[document.type].parse(document.content),
       ).not.toThrow();
@@ -21,7 +21,13 @@ describe('Phase 7 content publication', () => {
 
   it('invalidates every referencing surface when media changes', () => {
     const targets = invalidationTargets('media', 'media-hero-dish');
-    expect(targets.paths).toEqual(['/menu', '/our-story', '/gallery', '/']);
+    expect(targets.paths).toEqual([
+      '/menu',
+      '/our-story',
+      '/gallery',
+      '/',
+      '/private-dining',
+    ]);
     expect(targets.tags).toContain('media:media-hero-dish');
   });
 });
