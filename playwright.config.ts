@@ -3,6 +3,7 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
+  workers: 4,
   reporter: process.env.CI ? "github" : "list",
   use: { trace: "on-first-retry" },
   webServer: [

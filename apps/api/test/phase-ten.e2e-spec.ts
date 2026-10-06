@@ -7,14 +7,17 @@ import { Test } from '@nestjs/testing';
 import { Pool } from 'pg';
 import request from 'supertest';
 import type { App } from 'supertest/types.js';
+import { vi } from 'vitest';
 
 import { AppModule } from '../src/app.module.js';
 import { ContentService } from '../src/content/content.service.js';
 import { configureHttpApplication } from '../src/http/configure-http.js';
 import { OperationsService } from '../src/operations/operations.service.js';
+import { PrivateEventRepository } from '../src/private-event/private-event.repository.js';
 
 const adminKey = 'phase10_integration_content_key_123456';
 const enquiryEmail = 'phase10-integration@example.invalid';
+const concurrentEmail = 'phase10-concurrent@example.invalid';
 const diningSlug = 'phase10-integration-private-dining';
 const operationsSlug = 'phase10-integration-operations';
 const closureReason = 'phase10-integration-internal-reason';
@@ -207,14 +210,72 @@ describe('Phase 10 public content and enquiry (e2e)', () => {
     }
   });
 
+  it('serializes concurrent duplicate submits into one enquiry', async () => {
+    const key = randomUUID();
+    keys.push(key);
+    const body = {
+      name: 'Concurrent Fixture',
+      email: concurrentEmail,
+      phone: '+84900000000',
+      eventDate: '2026-12-20',
+      guests: 18,
+      eventType: 'Team dinner',
+    };
+    const send = () =>
+      request(app.getHttpServer())
+        .post('/api/v1/private-event-enquiries')
+        .set('Idempotency-Key', key)
+        .send(body);
+    const [first, second] = await Promise.all([send(), send()]);
+    expect(first.status).toBe(201);
+    expect(second.status).toBe(201);
+    expect(first.body.data).toEqual(second.body.data);
+    const count = await pool.query<{ count: string }>(
+      'SELECT count(*) FROM private_event_enquiries WHERE email = $1',
+      [concurrentEmail],
+    );
+    expect(Number(count.rows[0]?.count)).toBe(1);
+  });
+
+  it('rolls back the idempotency record when persistence fails', async () => {
+    const key = randomUUID();
+    const repository = app.get(PrivateEventRepository);
+    const failure = vi
+      .spyOn(repository, 'create')
+      .mockRejectedValueOnce(new Error('fixture database failure'));
+    try {
+      const response = await request(app.getHttpServer())
+        .post('/api/v1/private-event-enquiries')
+        .set('Idempotency-Key', key)
+        .send({
+          name: 'Rollback Fixture',
+          email: 'phase10-rollback@example.invalid',
+          phone: '+84900000000',
+          eventDate: '2026-12-20',
+          guests: 18,
+          eventType: 'Team dinner',
+        })
+        .expect(500);
+      expect(response.body.error.code).toBe('INTERNAL_ERROR');
+      const record = await pool.query(
+        'SELECT idempotency_key FROM private_event_enquiry_idempotency WHERE idempotency_key = $1',
+        [key],
+      );
+      expect(record.rowCount).toBe(0);
+    } finally {
+      failure.mockRestore();
+    }
+  });
+
   afterAll(async () => {
     await pool.query(
       'DELETE FROM private_event_enquiry_idempotency WHERE idempotency_key = ANY($1)',
       [keys],
     );
-    await pool.query('DELETE FROM private_event_enquiries WHERE email = $1', [
-      enquiryEmail,
-    ]);
+    await pool.query(
+      'DELETE FROM private_event_enquiries WHERE email = ANY($1)',
+      [[enquiryEmail, concurrentEmail]],
+    );
     await pool.query('DELETE FROM special_closures WHERE reason = $1', [
       closureReason,
     ]);

@@ -13,7 +13,7 @@ Status: **IN PROGRESS**
 - [x] 10.8 Contact frontend (unpublished-contact state until DEC-0038 closes)
 - [x] 10.9 Cross-site canonical operational content
 - [x] 10.10 Policies (only published policies appear)
-- [ ] 10.11 Automated tests
+- [x] 10.11 Automated tests
 - [ ] 10.12 Staging verification
 
 ## Exit criteria
@@ -34,4 +34,4 @@ On clean `main` at `61e49af`, `git pull --ff-only`, `pnpm.cmd install --frozen-l
 
 ## Local implementation evidence
 
-Migration `003_phase_10_operational` passed twice on local PostgreSQL. API unit and integration suites passed with Private Dining publication, operations composition, closure-to-availability consistency, and enquiry idempotency. Web unit tests and targeted Private Dining Playwright tests passed. The operations document is deliberately not seeded/published because production contact details remain unconfirmed; Contact, Home location, and Footer omit fabricated values until a published canonical record exists.
+Migration `003_phase_10_operational` passed twice on local PostgreSQL. `pnpm.cmd check` passed, including 19 API integration tests for Private Dining publication, operations composition, closure-to-availability consistency, enquiry concurrency, and transaction rollback. `pnpm.cmd test:e2e` passed 32/32 with four workers across existing and Phase 10 flows, including keyboard focus, validation, network retry, duplicate submit, server failure, and responsive widths. The operations document is deliberately not seeded/published because production contact details remain unconfirmed; Contact, Home location, and Footer omit fabricated values until a published canonical record exists.

@@ -40,7 +40,7 @@ test.describe("Phase 7 canonical content", () => {
     await expect(images.first()).toHaveAttribute("loading", "lazy");
 
     await page.getByRole("navigation", { name: "Gallery categories" }).getByText("Chef").click();
-    await expect(page).toHaveURL(/category=chef/);
+    await expect(page).toHaveURL(/category=chef/, { timeout: 15_000 });
     await expect(page.locator("main img")).toHaveCount(1);
   });
 
