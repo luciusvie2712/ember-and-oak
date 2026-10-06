@@ -7,7 +7,7 @@ export function MenuCategoryNavigation({
 }: Readonly<{ categories: readonly MenuCategoryContent[] }>) {
   return (
     <nav aria-label="Menu categories" className={styles.categoryNavigation}>
-      <ul>
+      <ul className={styles.menuNavigation}>
         {categories.map(({ category }) => (
           <li key={category.id}>
             <a href={`#${category.slug}`}>{category.name}</a>

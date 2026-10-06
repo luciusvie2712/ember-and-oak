@@ -64,6 +64,13 @@
   color: var(--color-accent);
 }
 
+.menuNavigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
 .category {
   padding: clamp(5rem, 10vw, 9rem) 0;
   display: grid;
