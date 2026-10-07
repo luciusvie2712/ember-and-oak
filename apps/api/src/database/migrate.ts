@@ -5,6 +5,7 @@ import { Pool } from 'pg';
 import { loadEnvironment } from '../config/environment.js';
 import { contentMigrations } from './migrations/content-migrations.js';
 import { phaseTenMigrations } from './migrations/phase-10-migrations.js';
+import { phaseElevenMigrations } from './migrations/phase-11-migrations.js';
 import { reservationMigrations } from './migrations/reservation-migrations.js';
 
 async function migrate(): Promise<void> {
@@ -21,6 +22,7 @@ async function migrate(): Promise<void> {
       ...contentMigrations,
       ...reservationMigrations,
       ...phaseTenMigrations,
+      ...phaseElevenMigrations,
     ]) {
       const applied = await pool.query<{ id: string }>(
         'SELECT id FROM schema_migrations WHERE id = $1',

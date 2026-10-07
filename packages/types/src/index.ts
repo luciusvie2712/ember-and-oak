@@ -15,6 +15,8 @@ export type ApiStatus = {
   status: "ok";
 };
 
+export * from "./admin/index.js";
+
 export * from "./content/chef.js";
 export * from "./content/gallery.js";
 export * from "./content/home.js";

@@ -22,6 +22,14 @@ export const environmentSchema = z.object({
   ERROR_TRACKING_DSN: z.string().url().optional().or(z.literal('')),
   EMAIL_PROVIDER_API_KEY: z.string().optional(),
   ADMIN_CONTENT_API_KEY: z.string().min(32).optional(),
+  ADMIN_SESSION_TTL_HOURS: z.coerce.number().int().min(1).max(168).default(8),
+  ADMIN_LOGIN_MAX_FAILURES: z.coerce.number().int().min(1).max(20).default(5),
+  ADMIN_LOGIN_LOCK_MINUTES: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(1440)
+    .default(15),
   WEB_REVALIDATION_URL: z.string().url().optional(),
   WEB_REVALIDATION_SECRET: z.string().min(32).optional(),
   ASSET_CDN_URL: z.string().url().optional(),

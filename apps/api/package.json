@@ -14,7 +14,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "start:e2e": "pnpm db:migrate && pnpm db:seed && nest start --watch",
+    "start:e2e": "pnpm db:migrate && pnpm db:seed && pnpm admin:e2e-seed && nest start --watch",
     "lint": "oxlint src/ test/",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -25,6 +25,8 @@
     "db:check": "pnpm build && node dist/database/check-database.js",
     "db:migrate": "pnpm build && node dist/database/migrate.js",
     "db:seed": "pnpm build && node dist/content/seed-content.js",
+    "admin:bootstrap": "pnpm build && node dist/admin-auth/bootstrap-admin.js",
+    "admin:e2e-seed": "pnpm build && node dist/admin-auth/seed-e2e-admin.js",
     "dev": "nest start --watch",
     "typecheck": "tsc --noEmit",
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\""
