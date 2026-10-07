@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --port 3001",
-    "dev:e2e": "next dev --port 3101",
+    "dev": "next dev --webpack --port 3001",
+    "dev:e2e": "next dev --webpack --port 3101",
     "e2e:serve": "next start --port 3101",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start --port 3001",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
