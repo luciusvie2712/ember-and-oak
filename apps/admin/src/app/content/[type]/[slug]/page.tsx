@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ContentApiError, getAdminDocument } from "@/lib/content-api";
+import { requireAdminSession } from "@/lib/admin-session";
 
 import { archiveAction, publishAction, saveDraftAction } from "./actions";
 import styles from "./page.module.css";
+import { StructuredEditor } from "./structured-editor";
 
 const documents = [
   ["menu", "dinner", "Menu"],
@@ -36,6 +38,7 @@ type EditorPageProps = Readonly<{
 }>;
 
 export default async function EditorPage({ params, searchParams }: EditorPageProps) {
+  await requireAdminSession(["ADMIN", "CONTENT_EDITOR"]);
   const { type, slug } = await params;
   const status = await searchParams;
   const known = documents.some(([itemType, itemSlug]) => itemType === type && itemSlug === slug);
@@ -107,21 +110,13 @@ export default async function EditorPage({ params, searchParams }: EditorPagePro
         <form action={saveDraftAction} className={styles.form}>
           <input name="type" type="hidden" value={type} />
           <input name="slug" type="hidden" value={slug} />
-          <label htmlFor="content">Canonical content JSON</label>
+          <input name="expectedVersion" type="hidden" value={document?.version ?? 0} />
+          <h2>Structured content</h2>
           <p>
-            Save validates the canonical contract. Publish runs the stricter public-content and
-            relation guardrails before replacing the live revision.
+            Edit labelled fields, reorder or duplicate repeatable items, then save a validated
+            draft.
           </p>
-          <textarea
-            defaultValue={JSON.stringify(
-              document?.draft ?? document?.published ?? emptyOperations,
-              null,
-              2,
-            )}
-            id="content"
-            name="content"
-            spellCheck={false}
-          />
+          <StructuredEditor initial={document?.draft ?? document?.published ?? emptyOperations} />
           <button type="submit">Save draft</button>
         </form>
 

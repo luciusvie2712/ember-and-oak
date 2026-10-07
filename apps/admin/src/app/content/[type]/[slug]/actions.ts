@@ -30,7 +30,8 @@ function identity(formData: FormData) {
 export async function saveDraftAction(formData: FormData): Promise<never> {
   const document = identity(formData);
   const source = z.string().min(2).parse(formData.get("content"));
-  await saveAdminDraft(document.type, document.slug, JSON.parse(source));
+  const expectedVersion = z.coerce.number().int().min(0).parse(formData.get("expectedVersion"));
+  await saveAdminDraft(document.type, document.slug, JSON.parse(source), expectedVersion);
   const path = `/content/${document.type}/${document.slug}`;
   revalidatePath(path);
   redirect(`${path}?saved=1`);

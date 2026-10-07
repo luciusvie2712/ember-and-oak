@@ -113,6 +113,67 @@
   tab-size: 2;
 }
 
+.structured-editor {
+  display: grid;
+  gap: 1rem;
+}
+.structured-editor label {
+  display: grid;
+  gap: 0.35rem;
+  color: #4f493f;
+}
+.structured-editor input,
+.structured-editor textarea,
+.structured-editor select {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #a69d90;
+  background: #fffdfa;
+  font: inherit;
+}
+.structured-editor textarea {
+  min-height: 7rem;
+  font-family: inherit;
+}
+.structured-group {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 1.25rem;
+  border: 1px solid #c8c0b5;
+}
+.structured-group legend {
+  padding-inline: 0.5rem;
+  font-weight: 700;
+}
+.array-item {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #eee8de;
+}
+.array-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.array-actions button {
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+  background: transparent;
+  color: #201d18;
+  border: 1px solid #8b8174;
+}
+.structured-editor .boolean-field {
+  display: flex;
+  align-items: center;
+}
+.structured-editor .boolean-field input {
+  width: 1.25rem;
+  min-height: 1.25rem;
+}
+
 .form button,
 .publishForm button,
 .archiveForm button {

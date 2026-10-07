@@ -69,6 +69,11 @@ export class ContentController {
 export class AdminContentController {
   constructor(private readonly content: ContentService) {}
 
+  @Get(':type')
+  async listDocuments(@Param('type') type: string) {
+    return { data: await this.content.listAdminDocuments(type) };
+  }
+
   @Get(':type/:slug')
   async getDocument(@Param('type') type: string, @Param('slug') slug: string) {
     return { data: await this.content.getAdminDocument(type, slug) };

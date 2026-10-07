@@ -32,8 +32,9 @@ export class ContentRevalidationService
     this.retryTimer.unref();
   }
 
-  onApplicationShutdown(): void {
+  async onApplicationShutdown(): Promise<void> {
     if (this.retryTimer) clearInterval(this.retryTimer);
+    await this.flushPromise;
   }
 
   flushPending(): Promise<void> {

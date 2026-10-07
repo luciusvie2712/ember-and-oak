@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import type {
   GalleryContent,
   HomeContent,
@@ -294,9 +298,37 @@ export class ContentService {
     };
   }
 
+  async listAdminDocuments(typeValue: string) {
+    const type = contentDocumentTypeSchema.parse(typeValue);
+    const result = await this.database.query<DocumentRow>(
+      `SELECT document_type, slug, draft_revision, published_revision,
+              publish_state, version, updated_at, published_at
+       FROM content_documents WHERE document_type = $1 ORDER BY slug`,
+      [type],
+    );
+    return result.rows.map((row) => ({
+      type: row.document_type,
+      slug: row.slug,
+      draft: row.draft_revision,
+      published: row.published_revision,
+      publishState: row.publish_state,
+      version: row.version,
+      updatedAt: row.updated_at.toISOString(),
+      publishedAt: row.published_at?.toISOString(),
+    }));
+  }
+
   async saveDraft(typeValue: string, slug: string, input: unknown) {
     const type = contentDocumentTypeSchema.parse(typeValue);
-    const canonical = draftSchemas[type].parse(input);
+    const envelope =
+      input && typeof input === 'object' && 'content' in input
+        ? (input as { content: unknown; expectedVersion?: unknown })
+        : { content: input, expectedVersion: undefined };
+    const canonical = draftSchemas[type].parse(envelope.content);
+    const expectedVersion =
+      typeof envelope.expectedVersion === 'number'
+        ? envelope.expectedVersion
+        : undefined;
     const result = await this.database.query<DocumentRow>(
       `INSERT INTO content_documents (document_type, slug, draft_revision, publish_state, version)
        VALUES ($1, $2, $3::jsonb, 'DRAFT', 1)
@@ -304,10 +336,13 @@ export class ContentService {
        SET draft_revision = EXCLUDED.draft_revision,
            version = content_documents.version + 1,
            updated_at = now()
+       WHERE $4::integer IS NULL OR content_documents.version = $4
        RETURNING document_type, slug, draft_revision, published_revision,
                  publish_state, version, updated_at, published_at`,
-      [type, slug, JSON.stringify(canonical)],
+      [type, slug, JSON.stringify(canonical), expectedVersion ?? null],
     );
+    if (!result.rowCount)
+      throw new ConflictException('CONTENT_VERSION_CONFLICT');
     return {
       type,
       slug,
