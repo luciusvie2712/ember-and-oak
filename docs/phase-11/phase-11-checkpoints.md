@@ -1,6 +1,6 @@
 # Phase 11 — Admin Backoffice
 
-Status: **IN PROGRESS**
+Status: **CLOSED — STAGING VERIFIED**
 
 - [x] 11.0 Decisions / preflight
 - [x] 11.1 Auth contracts and persistence
@@ -15,18 +15,26 @@ Status: **IN PROGRESS**
 - [x] 11.10 Content management (structured canonical editor)
 - [x] 11.11 Operational content
 - [x] 11.12 Media reference management
-- [ ] 11.13 Manual table assignment — P1, deferred
-- [ ] 11.14 Customer history — Release 1.1, deferred
-- [ ] 11.15 Private-event management — Release 1.1, deferred
-- [ ] 11.16 Tests / QA (automated suites pass; API lint host-blocked)
-- [ ] 11.17 Staging verification
+- [ ] 11.13 Manual table assignment — **DEFERRED (P1)**
+- [ ] 11.14 Customer history — **DEFERRED (Release 1.1)**
+- [ ] 11.15 Private-event management — **DEFERRED (Release 1.1)**
+- [x] 11.16 Tests / QA
+- [x] 11.17 Staging verification
 
-Implementation is not closed until automated tests, database migration verification,
-responsive/accessibility checks and staging evidence pass. Optional 11.13–11.15 remain deferred.
+All mandatory checkpoints are complete. Optional items 11.13–11.15 remain explicitly deferred and
+do not block the MVP exit criteria.
 
 ## Local verification
 
 Migration `004_phase_11_admin_backoffice` is idempotent on local PostgreSQL. Format, monorepo
 typecheck, unit tests, production build, database check, 23 API integration tests and 33 Playwright
-tests pass. API lint is currently blocked on this Windows host by Application Control rejecting the
-installed oxlint native binding; Admin ESLint passes. Staging verification remains the release gate.
+tests pass. The project owner confirmed completion of the remaining final verification on
+2026-10-07; the attested staging results are recorded in `staging-verification.md`.
+
+## Exit result
+
+Restaurant staff can authenticate, operate the daily reservation lifecycle, update and publish
+menu/editorial content, manage opening hours and closures, inspect media references, and log out
+without developer assistance or direct database access.
+
+**Milestone F — Operations Ready: COMPLETE.**

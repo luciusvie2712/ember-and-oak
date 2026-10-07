@@ -1575,6 +1575,8 @@ Không hard-code nếu restaurant staff cần chỉnh thường xuyên.
 
 # 16. PHASE 11 — ADMIN BACKOFFICE
 
+Status: **CLOSED — owner-verified on 2026-10-07**
+
 ## Mục tiêu
 
 Cho phép restaurant staff vận hành website mà không cần developer cho các thao tác thường ngày.
@@ -2422,6 +2424,8 @@ Kết quả:
 ---
 
 ## Milestone F — Operations Ready
+
+Status: **COMPLETE — Phase 10 and Phase 11 closed**
 
 Bao gồm:
 
