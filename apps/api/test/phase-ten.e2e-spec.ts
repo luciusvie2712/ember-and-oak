@@ -35,13 +35,22 @@ describe('Phase 10 public content and enquiry (e2e)', () => {
 
   beforeAll(async () => {
     process.env.ADMIN_CONTENT_API_KEY = adminKey;
+    pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    // A previously interrupted run must not leave fixture documents published.
+    await pool.query(
+      'DELETE FROM content_publish_outbox WHERE document_slug = ANY($1::text[])',
+      [[diningSlug, operationsSlug]],
+    );
+    await pool.query(
+      'DELETE FROM content_documents WHERE slug = ANY($1::text[])',
+      [[diningSlug, operationsSlug]],
+    );
     const fixture = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
     app = fixture.createNestApplication();
     configureHttpApplication(app);
     await app.init();
-    pool = new Pool({ connectionString: process.env.DATABASE_URL });
   });
 
   it('keeps Private Dining draft private, resolves media, and hides archive', async () => {

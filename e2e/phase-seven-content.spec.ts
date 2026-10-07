@@ -50,18 +50,15 @@ test.describe("Phase 7 canonical content", () => {
     await expect(page.getByRole("heading", { name: "Mara Ellison" })).toBeVisible();
   });
 
-  test("minimal content editor is protected and available to an authorized editor", async ({
-    request,
-  }) => {
-    const url = `${adminBaseUrl}/content/menu/dinner`;
-    const anonymous = await request.get(url);
-    expect(anonymous.status()).toBe(401);
-
-    const authorization = Buffer.from("editor:phase7-editor-password").toString("base64");
-    const authorized = await request.get(url, {
-      headers: { authorization: `Basic ${authorization}` },
-    });
-    expect(authorized.ok()).toBe(true);
-    expect(await authorized.text()).toContain("Publish validated draft");
+  test("structured content editor requires a staff session", async ({ page }) => {
+    await page.goto(`${adminBaseUrl}/content/menu/dinner`);
+    await expect(page).toHaveURL(/\/login/);
+    await page.getByLabel("Email").fill("admin-e2e@example.invalid");
+    await page.getByLabel("Password").fill("phase-11-e2e-password");
+    await page.getByRole("button", { name: "Sign in" }).click();
+    await expect(page).toHaveURL(`${adminBaseUrl}/`);
+    await page.goto(`${adminBaseUrl}/content/menu/dinner`);
+    await expect(page.getByRole("heading", { name: "Structured content" })).toBeVisible();
+    await expect(page.getByText("Canonical content JSON")).toHaveCount(0);
   });
 });
