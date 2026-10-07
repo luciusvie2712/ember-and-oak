@@ -14,7 +14,7 @@ Status: **IN PROGRESS**
 - [x] 10.9 Cross-site canonical operational content
 - [x] 10.10 Policies (only published policies appear)
 - [x] 10.11 Automated tests
-- [ ] 10.12 Staging verification
+- [x] 10.12 Staging verification
 
 ## Exit criteria
 
