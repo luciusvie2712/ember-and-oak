@@ -46,6 +46,9 @@ Decision IDs are append-only. A changed decision is superseded by a newer ID rat
 | DEC-0038 | Production contact publication | Address, email, phone, and directions URL require business confirmation before publication | OPEN | Phase 10 contact and operational-content gate; extends DEC-0022 |
 | DEC-0039 | Private-event enquiry delivery | PostgreSQL commit is authoritative; notification is optional downstream delivery; provider and recipient remain undecided | CONFIRMED | Phase 10 transactional workflow; no enquiry lost on notification failure |
 | DEC-0040 | Event type and budget input | Bounded free text until business event taxonomy and currency are confirmed | CONFIRMED | Avoid invented enums or monetary normalization in Phase 10 |
+| DEC-0041 | MVP menu currency | VND | CONFIRMED | Supersedes DEC-0008 for Phase 11 menu administration |
+| DEC-0042 | Admin roles | ADMIN, HOST, CONTENT_EDITOR; API-enforced capability matrix | CONFIRMED | Minimal distinct operational roles for Phase 11 |
+| DEC-0043 | Admin reservation cancellation | PENDING/CONFIRMED may transition to CANCELLED; reason required (max 500); set cancelled_at; append immutable status event | CONFIRMED | Auditable cancellation and immediate capacity release |
 
 ## Phase 8 freeze effect
 
